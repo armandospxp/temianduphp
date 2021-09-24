@@ -1,0 +1,28 @@
+####  cambios al css ####
+##############################
+
+1.- #4d5259 | 5  claro  
+2.- #353a40 | 13 oscuro  
+3.- #0d0d0d | hover
+
+##############################
+
+####  botonera ####
+
+1.- #4d5259 |  fondo  
+2.- #4d5259 |  borde  
+
+3.- #353a40 |  fondo-hover  
+4.- #353a40 |  borde-hover  
+5.- 0 0 0 3px #AAB0BD | border-shadow-focus 
+6.- #BFB26F |  boton wizard selccionado
+7.- #8EB388 |  thead, tfoot datatable
+
+################################
+
+#FB9337 naranja -> color principal #03A696
+
+#007bff azules -> boton succes #5A98BF
+#ffc107 amarillos -> boton editar #F2BD1D
+#dc3545 rojos ->boton eliminar #b5352a
+
