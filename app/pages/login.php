@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>SIPAT</title>
+      <title>LOGIN TEMIANDU</title>
     <link rel="icon" type="image/png" href="../img/logo_comercial.png" />
     <!-- vendor css -->
     <link href="../../lib/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -29,12 +29,12 @@
     <div class="row no-gutters">
       <div class="col-lg-5">
         <div>
-          <h2>SIPAT</h2>
-          <p>Sistema de Gestión Patrimonial</p>
-          <p>Para la administración, uso, control, custodia, clasificación y contabilización de los bienes del estado.</p>
+            <h2>TEMIANDU</h2>
+            <p>Sistema de Gestión de Portería</p>
+            <p>Para registrar y ver los movimientos de Portería.</p>
 
-          <hr>
-          <p>Desarrollado por: A&P <br> <a>DTIC</a></p>
+            <hr>
+            <p>Desarrollado por: A&P<br>DTIC</p>
         </div>
       </div>
       <div class="col-lg-7">
@@ -56,7 +56,7 @@
         </form>
       </div><!-- col-7 -->
     </div><!-- row -->
-    <p class="tx-center tx-white-5 tx-12 mg-t-15">Copyright &copy; 2019. Todos los derechos reservados. Dirección de Tecnología de la información y Comunicación.</p>
+      <p class="tx-center tx-white-5 tx-12 mg-t-15">Copyright © 2021. Todos los derechos reservados. Dirección de Tecnología de la información y Comunicación.</p>
   </div><!-- signin-box -->
 </div><!-- am-signin-wrapper -->
 

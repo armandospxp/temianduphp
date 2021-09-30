@@ -12,7 +12,7 @@ if (!isset($_SESSION['temiandu']['auth'])) {
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>SIPAT</title>
+  <title>TEMIANDU</title>
   <link rel="icon" type="image/png" href="../img/logo_comercial.png" />
   <?php include("../paths/head_files.php"); ?>
 

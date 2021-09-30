@@ -74,37 +74,7 @@ $title = "Inicio";
 
 </div><!-- row -->
 
-<!-- HISTORIAL DE CARGA DE BIENES POR USUARIO  -->
 
-<div class="row row-sm mg-t-15 mg-sm-t-20">
-  <div class="col-lg-8">
-    <div class="card" style="box-shadow: 2px 2px 5px #999;">
-      <div class="card-header bg-transparent pd-20">
-        <h6 class="card-title tx-uppercase tx-12 mg-b-0">Historial de carga de bienes por usuario</h6>
-      </div><!-- card-header -->
-
-      <div class="card-body">
-        <div class="table-wrapper">
-          <table id="dtHistorialUsuario" class="" style="width: 100%;">
-            <thead>
-              <tr>
-                <th class="wd-5p">USUARIO</th>
-                <th class="wd-5p">NOMBRE</th>
-                <th class="wd-5p">CARGA</th>
-                <th class="wd-5p">FECHA DE ÚLTIMA CARGA</th>
-              </tr>
-            </thead>
-          </table>
-        </div><!-- table-wrapper -->
-      </div><!-- card-body -->
-
-      <div class="card-footer tx-12 pd-y-15 bg-transparent bd-t bd-gray-200">
-        <a><i class="fa fa-users mg-r-5"></i>Historial de todas las transacciones</a>
-      </div><!-- card-footer -->
-    </div><!-- table-responsive -->
-
-  </div><!-- card -->
-</div><!-- col-8 -->
 
 <?php include("../paths/foot_files.php"); ?>
 

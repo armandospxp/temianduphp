@@ -30,7 +30,7 @@ $menus = $personalCont->obtenerMenus($codigoAdministrador);
         <?php for ($i = 0; $i < count($menus); $i++) { ?>
           <?php if ($menus[$i]->getIdPadre() == 0) { ?>
             <li class="nav-item">
-              <a style="cursor:pointer;" class="nav-link with-sub <?php echo ${'active_' . $menus[$i]->getNombre()}; ?>">
+              <a style="cursor:pointer;" class="nav-link active <?php echo ${'active_' . $menus[$i]->getNombre()}; ?>">
                 <i class="icon <?php echo $menus[$i]->getIcono(); ?>"></i><span><?php echo $menus[$i]->getDescripcion(); ?></span>
               </a>
               <ul class="nav-sub">

@@ -1,6 +1,6 @@
 <?php
 
-include_once (__DIR__."/../config/ConnectionPg.php");
+include_once (__DIR__ . "/../config/ConnectionPgJoaju.php");
 include_once (__DIR__."/../models/Dependencia.php");
 
 class DependenciaCont{

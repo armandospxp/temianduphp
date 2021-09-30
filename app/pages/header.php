@@ -3,7 +3,7 @@
   <div class="am-header-left">
     <a id="naviconLeft" href="" class="am-navicon d-none d-lg-flex"><i class="icon ion-navicon-round"></i></a>
     <a id="naviconLeftMobile" href="" class="am-navicon d-lg-none"><i class="icon ion-navicon-round"></i></a>
-    <a href="home.php" class="am-logo">SIPAT</a>
+    <a href="home.php" class="am-logo">TEMIANDU</a>
   </div><!-- am-header-left -->
 
   <div class="am-header-right">
@@ -14,6 +14,7 @@
       </a>
       <div class="dropdown-menu wd-200">
         <ul class="list-unstyled user-profile-nav">
+          <li><a href="../scripts/logout.php"><i class="icon ion-key"></i> Cambiar contraseña</a></li>
           <li><a href="../scripts/logout.php"><i class="icon ion-power"></i> Cerrar sesión</a></li>
         </ul>
       </div><!-- dropdown-menu -->
