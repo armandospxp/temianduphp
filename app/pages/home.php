@@ -30,43 +30,16 @@ if (!isset($_SESSION['temiandu']['auth'])) {
           case 'Inicio':
             require 'inicio/inicio.php';
             break;
-          case 'dependencias':
-            require 'dependencias/dependencias.php';
+          case 'registrar_visita':
+            require 'registrarVisita/registrarVisita.php';
             break;
-          case 'plan_cuentas':
-            require 'planCuentas/planCuentas.php';
+          case 'reporte_visitas':
+            require 'reporteVisita/reporteVisita.phpregistrarVisita';
             break;
-          case 'proveedores':
-            require 'proveedores.php';
-            break;
-          case 'bienes':
-            require 'bienes/bienes.php';
-            break;
-          case 'agregar_movimiento_interno':
-            require 'agregarMovimientoInterno/agregarMovimientoInterno.php';
-            break;
-          case 'agregar_bien':
-            require 'agregarBien/agregarBien.php';
-            break;
-          case 'asignar_responsabilidad':
-            require 'asignarResponsabilidad/asignarResponsabilidad.php';
-            break;
-          case 'deslindar_responsabilidad':
-            require 'deslindarResponsabilidad/deslindarResponsabilidad.php';
-            break;
-          case 'bienes_dependencia':
-            require 'bienesDependencia/bienesDependencia.php';
-            break;
-          case 'planilla_responsabilidad':
-            require 'planillaResponsabilidad/planillaResponsabilidad.php';
-            break;
-          case 'movimiento_interno':
-            require 'movimientoInterno/movimientoInterno.php';
-            break;
+            case 'ayuda':
+                require 'ayuda/ayuda.php';
         }
-      } elseif (!empty($_GET['edit'])) {
-        require 'bienes/editarBien.php';
-      } else {
+      }else {
         require 'inicio/inicio.php';
       }
       ?>

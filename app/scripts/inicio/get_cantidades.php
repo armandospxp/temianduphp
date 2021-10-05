@@ -3,8 +3,8 @@ include_once (__DIR__."/../../controllers/InicioCont.php");
 
 $tabla = "";
 $iniCont = new InicioCont();
-$cantidadTotal = $iniCont->obtenerCantidadBienes();
-$cantidadUltimaSemana = $iniCont->obtenerCantidadBienesUltimaSemana();
+$cantidadTotal = $iniCont->obtenerCantidadVisitas();
+$cantidadUltimaSemana = $iniCont->obtenerCantidadVisitasUltimaSemana();
 
 $tabla = '{"total":"' . $cantidadTotal . '",
     "ultimaSemana":"' . $cantidadUltimaSemana . '"},';
