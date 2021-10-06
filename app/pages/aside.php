@@ -27,7 +27,7 @@ $menus = $personalCont->obtenerMenus($codigoAdministrador);
 
     <div id="mainMenu" class="tab-pane active">
       <ul class="nav am-sideleft-menu">
-        <li class="nav-item"><a href="?view=Inicio" class="nav-link <i class="icon ion-ios-home-outline tx-24"></i>Inicio</a></li>
+        <li class="nav-item"><a href="?view=Inicio" class="nav-link <?php echo $active_inicio; ?>"><i class="icon ion-ios-home-outline tx-24"></i>Inicio</a></li>
         <?php for ($i = 0; $i < count($menus); $i++) { ?>
           <?php if ($menus[$i]->getIdPadre() == 0) { ?>
             <li class="nav-item">

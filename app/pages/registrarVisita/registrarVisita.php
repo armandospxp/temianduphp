@@ -4,8 +4,7 @@ $active_inicio = "";
 
 $active_sistema = "";
 
-//include("../aside.php");
-include("../../paths/head_files.php");
+include(__DIR__. "../aside.php");
 include("../../paths/foot_files.php");
 $title = "REGISTRAR VISITA - TEMIANDU";
 ?>
