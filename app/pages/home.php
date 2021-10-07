@@ -34,7 +34,7 @@ if (!isset($_SESSION['temiandu']['auth'])) {
             require 'registrarVisita/registrarVisita.php';
             break;
           case 'reporte_visitas':
-            require 'reporteVisita/reporteVisita.phpregistrarVisita';
+            require 'reporteVisita/reporteVisita.php';
             break;
             case 'ayuda':
                 require 'ayuda/ayuda.php';

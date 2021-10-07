@@ -4,21 +4,18 @@ $active_inicio = "";
 
 $active_sistema = "";
 
-include(__DIR__. "../aside.php");
-include("../../paths/foot_files.php");
+include("aside.php");
+//include("../../paths/foot_files.php");
 $title = "REGISTRAR VISITA - TEMIANDU";
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>REGISTRAR VISITA  - TEMIANDU</title>
-    <link rel="icon" type="image/png" href="../img/logo_comercial.png" />
-    <?php include("../../paths/head_files.php"); ?>
-        <h5 class="am-title">Registro de Visitas</h5>
-<form method="post" id="registro_visita" action="{% url 'crear_visita' %}">
+<?php //include("/header.php"); ?>
+    <div class="am-pagetitle">
+        <h5 class="am-title"><?php echo $title ?></h5>
+    </div><!-- am-pagetitle -->
+<form method="post" id="registro_visita" action="">
 <div class="container">
     <div class="card ">
     <div class="card-header card-header-default justify-content-between bg-header-sipat">
@@ -71,8 +68,97 @@ $title = "REGISTRAR VISITA - TEMIANDU";
             <div class="modal-body pd-20" style="width: 650px;">
                  <div class="card">
       <div class="card-body" style="width: 100%;">
-        <!iframe id="agregarnuevovisitante" class="card" width="700" height="405" src="/personas/nuevo_visitante"><!/iframe>
-        {% include "personas/visitante_form.html" %}
+                <script src="registrarVisita/registrarVisita.js"></script>
+    <div class="card">
+        <form id="crear_visitante" method="POST" action="{% url 'crear_visitante' %}">
+        <div class="card">
+      <div class="card-body">
+          <div class="card" id="errores" name="errores">
+              <p class="alert-danger" id="m_registrar" class="mg-b-5"></p>
+          </div>
+              <div class="row row-xs mg-t-20">
+          <label class="col-sm-2 form-control-label">Cedula: <span class="tx-danger">*</span></label>
+          <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+            <div class="input-group" id="cedula">
+                <input type="text" autocomplete="off" class="form-control" id="cedula_3" name="cedula_3" placeholder="CEDULA" style="text-transform:uppercase;" required>
+            </div>
+              <p class="alert-danger" id="m_cedula" class="mg-b-5"></p>
+          </div>
+    </div>
+    <div class="row row-xs mg-t-20">
+          <label class="col-sm-2 form-control-label">Nombre: <span class="tx-danger">*</span></label>
+          <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+            <div class="input-group">
+                <input type="text" autocomplete="off" class="form-control" id="nombre" name="nombre" placeholder="NOMBRE" style="text-transform:uppercase">
+            </div>
+              <p class="alert-danger" id="m_nombre" class="mg-b-5"></p>
+          </div>
+    </div>
+        <div class="row row-xs mg-t-20">
+          <label class="col-sm-2 form-control-label">Apellido: <span class="tx-danger">*</span></label>
+          <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+            <div class="input-group">
+                <input type="text" autocomplete="off" class="form-control" id="apellido" name="apellido" placeholder="APELLIDO" style="text-transform:uppercase">
+            </div>
+              <p class="alert-danger" id="m_apellido" class="mg-b-5"></p>
+          </div>
+        </div>
+          <div class="row row-xs mg-t-20">
+          <label class="col-sm-2 form-control-label">Nacionalidad: <span class="tx-danger">*</span></label>
+          <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+            <div class="input-group">
+                <select class="form-control select2-sm" id="nacionalidad" name="nacionalidad" placeholder="NACIONALIDAD" required style="text-transform:uppercase"></select>
+            </div>
+              <p class="alert-danger" id="m_nacionalidad" class="mg-b-5"></p>
+          </div>
+        </div>
+            <div class="row row-xs mg-t-20">
+          <label class="col-sm-2 form-control-label">Telefono: </label>
+          <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+            <div class="input-group">
+                <input type="hidden" id="edit" name="edit" value="2">
+                <input type="text" autocomplete="off" class="form-control" id="telefono" maxlength="12" name="telefono" placeholder="telefono" style="text-transform:uppercase" >
+            </div>
+          </div>
+            </div>
+
+<!div class="row row-xs mg-t-20">
+    <!button type="button" onclick="registro_visitante()" class="btn btn-success mg-r-5" id="GuardarVisitante"><!/button>
+<!/div>
+</div>
+        </div>
+            </form>
+      </div>
+
+<div class="modal fade" id="msgValidacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content bd-0">
+
+            <form class="form-horizontal">
+
+                <div class="modal-header pd-y-20 pd-x-25">
+                    <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Información</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body pd-25">
+                   <div class="alert alert-danger" role="alert">
+                    <p id="modalMensaje" class="mg-b-5"></p>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Aceptar</button>
+                </div>
+            </form>
+
+
+        </div>
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
+
     </div>
     </div>
             </div>
@@ -115,7 +201,6 @@ $title = "REGISTRAR VISITA - TEMIANDU";
           <label class="col-sm-2 form-control-label">Destino: <span class="tx-danger">*</span></label>
           <div class="col-sm-6 mg-t-10 mg-sm-t-0">
             <div class="input-group">
-              {{ form.destino }}
                 <input type="text" class="form-control" id="destino" onkeypress="TabKey(e, 'observaciones')" style="text-transform:uppercase" name="destino" placeholder="DESTINO" required readonly>
               <span class="input-group-btn">
                 <button id="btnBuscarDestino" style="cursor:pointer;" class="btn bd bg-white tx-gray-600" type="button" data-toggle="modal" data-target="#buscarDestino"><i class="fa fa-search"></i></button>
@@ -150,7 +235,6 @@ $title = "REGISTRAR VISITA - TEMIANDU";
         <div class="row row-xs mg-t-20">
           <label class="col-sm-2 form-control-label">Observaciones:</label>
           <div class="col-sm-6 mg-t-10 mg-sm-t-0">
-            {{ form.observaciones }}
               <textarea class="form-control" cols="2" placeholder="INGRESE ALGUNA OBSERVACION" style= "text-transform:uppercase;" name="observaciones" id= "observaciones"></textarea>
 
           </div>
@@ -197,45 +281,6 @@ $title = "REGISTRAR VISITA - TEMIANDU";
           </tbody>
                 </table>
     </div>
-    <script type="text/javascript">
-    $('#cedula_b').focus()
-         $(function () {
-             var d = new Date();
-             var hora = d.getHours();
-             hora = ("0" + hora).slice(-2);
-             var minuto = d.getMinutes();
-             minuto = ("0" + minuto).slice(-2);
-             var hora_actual = hora+':'+minuto;
-             $('#fecha').datepicker({
-                        regional:'es',
-                    dateFormat: 'dd/mm/yy',
-                        language:'es',
-                        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-}).datepicker("setDate", new Date());
-$('#hora_entrada').datetimepicker({
-                 format: 'HH:mm'
-             }).val(hora_actual);
-$('#hora_salida').datetimepicker({
-                 format: 'HH:mm'
-             })
- });
-function KeyAscii(e) {
-    return (document.all) ? e.keyCode : e.which;
-}
- function TabKey(e, siguiente_objeto) {
-     siguiente_objeto = document.getElementById(siguiente_objeto);
-     if (siguiente_objeto) {
-         if (KeyAscii(e) == 13){
-             siguiente_objeto.focus();
-             e.preventDefault();
-         }
-     }
- }
-    </script>
     </div>
     </div>
     <div class="modal fade" id="msgError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

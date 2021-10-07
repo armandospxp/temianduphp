@@ -1,225 +1,86 @@
 <?php
-<title>REGISTRAR VISITA  - TEMIANDU</title>
-        <h5 class="am-title">Registro de Visitas</h5>
-               <div id="mainMenu" class="tab-pane active">
-          <ul class="nav am-sideleft-menu">
-            <li class="nav-item">
-              <a href="{%url 'index_visita'%}" class="nav-link active">
-                <i class="icon ion-ios-home-outline"></i>
-                <span>Inicio</span>
-              </a>
-            </li><!-- nav-item -->
-            <li class="nav-item">
-              <a href="{% url 'crear_visita' %}" class="nav-link active">
-                <i class="icon ion-person-add"></i>
-                <span>Registrar Visita</span>
-              </a>
-            </li><!-- nav-item -->
-              <li class="nav-item">
-              <a href="{% url 'listar_visitas_custom' %}" class="nav-link active">
-                <i class="icon ion-clipboard"></i>
-                <span>Reporte de Visitas</span>
-              </a>
-            </li><!-- nav-item -->
-                            <li class="nav-item">
-              <a href="{% static 'pdf/MANUAL-TEMIANDU.pdf' %}" target="_blank" class="nav-link active">
-                <i class="icon ion-help-circled"></i>
-                <span>Ayuda</span>
-              </a>
-            </li><!-- nav-item -->
-          </ul>
-        </div><!-- #mainMenu -->
-    <!script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"><!/script>
-        <script src="{% static 'lib/jquery/jquery.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'lib/popper.js/popper.js' %}"></script>
-        <script src="{% static 'lib/datatables/jquery.dataTables.js' %}"></script>
-        <script src="{% static 'lib/datatables/Select-1.3.1/js/dataTables.select.js' %}"></script>
-        <script src="{% static 'lib/datatables/KeyTable-2.5.2/js/dataTables.keyTable.js' %}"></script>
-        <script src="{% static 'lib/datatables/Responsive-2.2.5/js/dataTables.responsive.js' %}"></script>
-        <script src="{% static 'js/listado-visitas.js' %}"></script>
-        <script src="{% static 'js/listado-visitantes.js' %}"></script>
-        <script src="{% static 'js/listado-dependencias.js' %}"></script>
-        <script src="{% static 'js/eliminar_visita.js' %}"></script>
-        <script src="{% static 'js/control_frm_visita.js' %}"></script>
-        <script src="{% static 'js/moment.min.js' %}"></script>
-        <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
-        <script src="{% static 'js/busqueda_visitante_cedula.js' %}"></script>
-        <script src="{% static 'js/captura_enter.js' %}"></script>
-        <script src="{% static 'js/foco_cedula.js' %}"></script>
-        <script src="{% static 'js/cargar_select_nacionalidad.js' %}"></script>
-        <script src="{% static 'js/limpiar_campos.js' %}"></script>
-            <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.min.css' %}" />
-            <link rel="stylesheet" href="{% static 'css/datatables.select.css' %}" />
-    <script src="{% static 'js/jquery-ui.js' %}"></script>
-        <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
-    {% endblock %}
-<form method="post" id="registro_visita" action="{% url 'crear_visita' %}">
-<div class="container">
-    <div class="card ">
-    <div class="card-header card-header-default justify-content-between bg-header-sipat">
-      <h6 class="card-body-title-secundary"><span class="fa fa-search"></span> NUEVA VISITA</h6>
-      <div class="card-option tx-24">
-      </div><!-- card-option -->
-    </div><!-- card-header -->
 
-    <div class="card-body bg-body-sipat">
-        <input type="hidden" value="" name="id_visita" id="id_visita">
-        <input type="hidden" value="" name="cedula_a" id="cedula_a">
-        <div class="row row-xs mg-t-20">
-          <label class="col-sm-2 form-control-label">Fecha y Hora: <span class="tx-danger">*</span></label>
-          <div class="col col-sm-2 input-group">
-              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-              <input type="datepicker form-control" autocomplete="off" class="form-control" id="fecha" name="fecha" placeholder="FECHA" readonly required>
+$active_inicio = "";
+
+$active_sistema = "";
+
+include("aside.php");
+//include("../../paths/foot_files.php");
+$title = "LISTADO VISITAS - TEMIANDU";
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<?php //include("/header.php"); ?>
+    <div class="am-pagetitle">
+        <h5 class="am-title"><?php echo $title ?></h5>
+    </div><!-- am-pagetitle -->
+    <title>LISTADO VISITAS - TEMIANDU</title>
+     <!-- Page Wrapper -->
+        <div class="card" style="background-color:transparent">
+            <div class="card-body">
+                    <form class="form-horizontal" method="get">
+                        <h6 class="card-body-title">Busqueda por rango de fecha</h6>
+                        <div class="form-layout">
+                            <div class="row-mg-b-5">
+                                <div class="d-flex align-items-center justify-content-center ht-md-80 bd col-sm-6 mg-t-10 mg-sm-t-0" style="width: 100%">
+                                    <div class="d-md-flex pd-y-20 pd-md-y-0" style="width: 100%">
+                                        <span class="input-group-addon"><i class="icon ion-calendar tx-16 lh-0 op-6"></i></span>
+                                        <input class="datepicker form-control" name="fecha_desde" autocomplete="off" placeholder="INGRESE FECHA DESDE">
+                                        <span class="input-group-addon"><i class="icon ion-calendar tx-16 lh-0 op-6"></i></span>
+                                        <input class="datepicker2 form-control" name="fecha_hasta" autocomplete="off" placeholder="INGRESE FECHA HASTA">
+                                    </div>
+                                    <button style="cursor:pointer" id="btnBuscarResponsable_fc10" class="btn btn-info pd-y-13 pd-x-20 bd-0 mg-md-l-10 mg-t-10 mg-md-t-0">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                <br>
+                 <form class="form-horizontal" method="get">
+                        <h6 class="card-body-title">Busqueda por Visitante</h6>
+                        <div class="form-layout">
+                            <div class="row-mg-b-5">
+                                <div class="d-flex align-items-center justify-content-center ht-md-80 bd col-sm-6 mg-t-10 mg-sm-t-0" style="width: 100%">
+                                    <div class="d-md-flex pd-y-20 pd-md-y-0" style="width: 100%">
+                                        <input class="form-control" id="visitante" name="visitante" autocomplete="off" placeholder="VISITANTE">
+                                        <span class="input-group-btn">
+                                            <button id="btnBuscarVisitante" style="cursor:pointer;" class="btn bd bg-white tx-gray-600" type="button" data-toggle="modal" data-target="#buscarVisitante" autofocus="autofocus"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                    <button style="cursor:pointer" id="btnBuscarResponsable_fc10" class="btn btn-info pd-y-13 pd-x-20 bd-0 mg-md-l-10 mg-t-10 mg-md-t-0">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <script type="text/javascript">
+                </script>
           </div>
-          <div class="col col-sm-2 input-group">
-              <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-              <input type="form-control col-sm-2" class="form-control"  autocomplete="off" id="hora_entrada" name="hora_entrada" placeholder="HORA ENTRADA" required>
         </div><!-- row -->
-          <div class="col col-sm-2 input-group">
-              <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-            <input type="datepicker form-control" class="form-control" autocomplete="off" id="hora_salida" name="hora_salida" placeholder="HORA SALIDA">
-          </div>
-        </div>
-        <!-- row -->
-        <div class="row row-xs mg-t-20">
-          <label class="col-sm-2 form-control-label">Visitante: <span class="tx-danger">*</span></label>
-          <div class="col col-sm-2 input-group">
-             <input type="text" class="form-control" id="cedula_b" autocomplete="off" name="cedula_b" placeholder="CI" style="text-transform:uppercase" required>
-                <!button id="btnBuscarVisitante" style="cursor:pointer;" class="btn bd bg-white tx-gray-600" type="button" type="button" data-toggle="modal" data-target="#buscarVisitante"><!i class="fa fa-search"><!/i><!/button>
-          </div>
-          <div class="col col-sm-4 input-group">
-              <input type="text" class="form-control" autocomplete="off"  type="form-control" id="visitante" name="visitante" placeholder="VISITANTE" style="text-transform:uppercase" required readonly>
-              <span class="input-group-btn">
-                <button id="btnAgregarVisitante" onclick="foco_cedula()" style="cursor:pointer;" class="btn btn-info" type="button" type="button" data-toggle="modal" data-target="#agregarVisitante"><i class="fa fa-plus"></i></button>
-              </span>
-        </div><!-- row -->
-        </div>
-             <div id="agregarVisitante" class="modal fade show">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content tx-size-sm">
-          <div class="modal-header pd-x-20">
-            <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold"><span class="fa fa-plus"></span> NUEVO VISITANTE</h6>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-            <div class="modal-body pd-20" style="width: 650px;">
-                 <div class="card">
-      <div class="card-body" style="width: 100%;">
-        <!iframe id="agregarnuevovisitante" class="card" width="700" height="405" src="/personas/nuevo_visitante"><!/iframe>
-        {% include "personas/visitante_form.html" %}
-    </div>
-    </div>
+        <br>
+    <div class="container">
+            <div class="card">
+                <div class="card-header card-header-default justify-content-between bg-header-sipat">
+                <h6 class="card-body-title-secundary"><span class="fa fa-search"></span> LISTADO VISITAS</h6>
+                <div class="card-option tx-24">
+                    <a href="{% url 'reporte_visitas' %}">
+              <button style="cursor:pointer" type="submit" class="btn btn-primary btn btn-info pd-y-13 pd-x-20 bd-0 mg-md-l-10 mg-t-10 mg-md-t-0">
+                <i class="fa fa-download"></i>
+                  Imprimir
+              </button>
+            </a>
+                </div><!-- card-option -->
+            </div><!-- card-header -->
+            <div class="card-body bg-body-sipat">
+            <div id="dataTables_filter">
+        <label>
+                Buscar: .  <input id="searchTerm" type="search" onkeyup="doSearch()" />
+            </label>
             </div>
-          <div class="modal-footer">
-               <button type="button" onclick="registro_visitante()" class="btn btn-success mg-r-5" id="GuardarVisitante">Guardar</button>
-            <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div><!-- modal-dialog -->
-    </div><!-- modal -->
-            <div id="buscarVisitante" class="modal fade show">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content tx-size-sm">
-          <div class="modal-header pd-x-20">
-            <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold"><span class="fa fa-search"></span>Búsqueda de Visitantes</h6>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-            <div class="modal-body pd-20" style="
-    width: 100%;">
-                <table class="table-bordered table-responsive table display nowrap dataTable no-footer dtr-inline" id="tblBusquedaVisitantes" style="width: 100%; cursor: pointer;">
+                <table class="table table-responsive dataTable no-footer" id="tblListadoVisitasCustom" name="tblListadoVisitasCustom">
                     <thead>
-                    <tr>
-                        <th>CI:</th>
-                        <th>Nombre:</th>
-                        <th>Apellido:</th>
-                        <th>Teléfono:</th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div><!-- modal-dialog -->
-    </div><!-- modal -->
-          <div class="row row-xs mg-t-20">
-          <label class="col-sm-2 form-control-label">Destino: <span class="tx-danger">*</span></label>
-          <div class="col-sm-6 mg-t-10 mg-sm-t-0">
-            <div class="input-group">
-              {{ form.destino }}
-                <input type="text" class="form-control" id="destino" onkeypress="TabKey(e, 'observaciones')" style="text-transform:uppercase" name="destino" placeholder="DESTINO" required readonly>
-              <span class="input-group-btn">
-                <button id="btnBuscarDestino" style="cursor:pointer;" class="btn bd bg-white tx-gray-600" type="button" data-toggle="modal" data-target="#buscarDestino"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </div>
-              <div id="buscarDestino" class="modal fade show">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content tx-size-sm">
-          <div class="modal-header pd-x-20">
-            <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold"><span class="fa fa-search"></span>Busqueda de Dependencia</h6>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-            <div class="modal-body pd-20" style="
-    width: 100%;">
-                <table class="table-bordered table-responsive table display nowrap dataTable no-footer dtr-inline" style="width: 100%;cursor: pointer;" id="tblBusquedaDestino">
-                    <thead>
-                        <th>Id:</th>
-                        <th>Dependencia:</th>
-                    </thead>
-                </table>
-            </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div><!-- modal-dialog -->
-    </div><!-- modal -->
-        </div><!-- row -->
-        <div class="row row-xs mg-t-20">
-          <label class="col-sm-2 form-control-label">Observaciones:</label>
-          <div class="col-sm-6 mg-t-10 mg-sm-t-0">
-            {{ form.observaciones }}
-              <textarea class="form-control" cols="2" placeholder="INGRESE ALGUNA OBSERVACION" style= "text-transform:uppercase;" name="observaciones" id= "observaciones"></textarea>
-
-          </div>
-        </div><!-- row -->
-    <!-- card -->
-<div class="form-layout-footer"style="
-    margin-left: 30px;
-    margin-top: 30px;">
-    <button type="button" onclick="control_frm_visita()" class="btn btn-success mg-r-5" id="guardarVisita">Guardar</button>
-    <button type="button" onclick="limpiar_campos()" class="btn btn-secondary mg-r-5">Cancelar</button>
-</div>
-        </div>
-    </div>
-  </div>
-  </form>
-    <div class="container container-fluid" style="
-    margin-top: 10px;
-">
-    <div class="card">
-    <div class="card-header card-header-default justify-content-between bg-header-sipat">
-      <h6 class="card-body-title-secundary"><span class="fa fa-search"></span> LISTADO VISITANTES DEL DIA</h6>
-      <div class="card-option tx-24">
-
-      </div><!-- card-option -->
-    </div><!-- card-header -->
-
-      <div class="card-body">
-          <table class="table table-responsive" style="width: 100%" id="tblListadoVisitas">
-                    <thead>
-                    <tr>
                         <th>#</th>
-                        <th>N° DOCUMENTO</th>
-                        <th>NOMBRE</th>
+                        <th>N° DE CEDULA</th>
+                        <th>VISITANTE</th>
                         <th>NACIONALIDAD</th>
                         <th>DEPENDENCIA DESTINO</th>
                         <th>FECHA</th>
@@ -229,74 +90,50 @@
                         <th>ACCIONES</th>
                     </tr>
                     </thead>
-          <tbody>
-          </tbody>
+                     <tbody>
+            <td style="display: flex;">
+				<a class="btn btn-info" href="{% url 'editar_visita' visita.id_visita %}">
+                    <i class="icon ion-edit"></i>
+                </a>
+                <btn class="btn btn-danger" id="btneliminar" data-toggle="modal" data-target="#eliminarVisitacustom" onclick="function registar_id_eliminar_custom(b={{ visita.id_visita }}) {
+                    console.log(b);
+                    $('#id_visita_eliminar').val(b);
+                        }
+                        registar_id_eliminar_custom({{ visita.id_visita }})"><i class="fa fa-trash"></i>
+                </btn>
+			</td>
+    </tr>
+    </tbody>
                 </table>
-    </div>
-    <script type="text/javascript">
-    $('#cedula_b').focus()
-         $(function () {
-             var d = new Date();
-             var hora = d.getHours();
-             hora = ("0" + hora).slice(-2);
-             var minuto = d.getMinutes();
-             minuto = ("0" + minuto).slice(-2);
-             var hora_actual = hora+':'+minuto;
-             $('#fecha').datepicker({
-                        regional:'es',
-                    dateFormat: 'dd/mm/yy',
-                        language:'es',
-                        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-}).datepicker("setDate", new Date());
-$('#hora_entrada').datetimepicker({
-                 format: 'HH:mm'
-             }).val(hora_actual);
-$('#hora_salida').datetimepicker({
-                 format: 'HH:mm'
-             })
- });
-function KeyAscii(e) {
-    return (document.all) ? e.keyCode : e.which;
-}
- function TabKey(e, siguiente_objeto) {
-     siguiente_objeto = document.getElementById(siguiente_objeto);
-     if (siguiente_objeto) {
-         if (KeyAscii(e) == 13){
-             siguiente_objeto.focus();
-             e.preventDefault();
-         }
-     }
- }
-    </script>
-    </div>
-    </div>
-    <div class="modal fade" id="msgError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document" >
-        <div class="modal-content bd-0">
-            <form class="form-horizontal">
-                <div class="modal-header pd-y-20 pd-x-25">
-                    <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Información</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body pd-25">
-                   <div class="alert alert-danger" role="alert">
-                    <p id="modalMensajeVisita" class="mg-b-5"></p>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Aceptar</button>
-                </div>
-            </form>
         </div>
-    </div><!-- modal-dialog -->
-</div><!-- modal -->
-     <div class="modal fade show" name= "eliminarVisita" id="eliminarVisita" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div id="buscarVisitante" class="modal fade show">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content tx-size-sm">
+          <div class="modal-header pd-x-20">
+            <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold"><span class="fa fa-search"></span>Busqueda de Visitante</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <div class="modal-body pd-20" style="width: 100%">
+                <table class="table-bordered table-responsive table display nowrap dataTable no-footer dtr-inline" style="width: 100%; cursor: pointer" id="tblBusquedaVisitantes">
+                    <thead>
+                        <th>Cedula:</th>
+                        <th>Nombre:</th>
+                        <th>Apellido:</th>
+                        <th>Telefono:</th>
+                    </thead>
+                </table>
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div><!-- modal-dialog -->
+    </div><!-- modal -->
+        </div>
+    </div>
+         <div class="modal fade show" name= "eliminarVisitacustom" id="eliminarVisitacustom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content bd-0">
             <form class="form-horizontal">
@@ -310,33 +147,11 @@ function KeyAscii(e) {
                     {% include 'visitas/visita_delete.html' %}
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" onclick="eliminar_visita()" type="button">Si, eliminar</button>
+                    <button class="btn btn-danger" onclick="eliminar_visita_custom()" type="button">Si, eliminar</button>
                     <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Cancelar</button>
                 </div>
             </form>
-            </div>
+        </div>
     </div><!-- modal-dialog -->
 </div><!-- modal -->
-
-                 <div id="error_visitante" class="modal fade show">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content tx-size-sm">
-          <div class="modal-header pd-x-20">
-            <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold"><span class="icon ion-information-circled"></span> ERROR VISITANTE</h6>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-            <div class="modal-body pd-20" style="width: 650px;">
-                 <div class="card">
-      <div class="card-body" style="width: 100%;">
-        <h6 class="text-danger text-center">No se encuentra registrado, favor registre primero en el sistema</h6>
-    </div>
-    </div>
-            </div>
-          <div class="modal-footer">
-            <button type="button" id="btn_modal_error_visitante" name="btn_modal_error_visitante" onclick="foco_cedula()" class="btn btn-secondary pd-x-20" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div><!-- modal-dialog -->
-    </div><!-- modal -->
+</script>

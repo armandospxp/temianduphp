@@ -1,19 +1,20 @@
 /*#########################################################
-############   PAGINA MOVIMIENTO INTERNO        ###########
+############   PAGINA REGISTAR VISITA      ###########
 ###########################################################*/
 //INCIO DE PAGINA
-$(document).ready(function () {
+/*$(document).ready(function () {
   mostrarCalendario();
   cargarUbicacionOrigenModal();
   cargarUbicacionDestinoModal();
-});
+}); */
 
 //VARIABLES
 var detallesDatatable = new Array();
 var numero_MIB = 0;
 var periodo_MIB = 0;
+let nombre_global;
 
-var formulario = document.getElementById("frmGuardarMovimiento");
+/* var formulario = document.getElementById("frmGuardarMovimiento");
 
 var dtBienes = $('#dtBienesMovimiento').DataTable({
   keys: true,
@@ -213,157 +214,165 @@ function cargarUbicacionDestinoModal() {
 
     });
 }
+ */
 
-//CARGAR BIENES POR UBICACION
-function agregarBienUbicacion() {
-  //ubicacion origen
-  var ubicacion_id = document.getElementById("reg_ubicacion_origen_id").value;
-  //construccion del rotulado
-  var entidad = document.getElementById("reg_entidad").value;
-  var reparticion = document.getElementById("reg_reparticion").value;
-  var dependencia = document.getElementById("reg_dependencia").value;
-  var numero_orden = completarCeroIzquierda(parseInt(document.getElementById("reg_numero_orden").value), 7);
-  var rotulado = entidad + "-" + reparticion + "-" + dependencia + "-" + numero_orden;
-  //motivo del movimiento
-  var motivo = document.getElementById("reg_motivo").value;
-  //acciones
-  var accion = "<button style='cursor:pointer' type='button' class='btn btn-danger' title='Eliminar Bien' id=" + rotulado + " onclick=eliminarBien('" + rotulado + "')><i class='fa fa-trash'></i></button>";
-  if (validarAgregarBien(rotulado)) {
-    //se agregan los bienes al datatable, si existen y corresponde a la ubicacion de origen
-    $.ajax({
+//funcion para registrar nuevo visitante
+function registro_visitante(){
+  var resultado = validar_campos_editar();
+  if (resultado==true){
+      $.ajax({
+      data: {
+          'cedula': $('#cedula_3').val(),
+          'nombre': $('#nombre').val(),
+          'apellido': $('#apellido').val(),
+          'telefono': $('#telefono').val(),
+          'nacionalidad': $('#nacionalidad').val(),
+      },
+      url: '/visitas/nuevo_visitante/',
       type: "post",
-      url: "../scripts/bienes/get_bien_dependencia.php",
-      data: "rotulado=" + rotulado + "&ubicacion=" + ubicacion_id,
-      success: function (data) {
-        var obj = JSON.parse(data);
-        if (obj.data[0].rotulado == '') {
-          document.getElementById("modalMensaje").innerHTML = "[ERROR] No Existe el Bien de Uso o no se encuentra en la ubicación de origen!";
-          $('#msgValidacion').modal('show');
-        } else {
-          dtBienes.row.add([
-            obj.data[0].dependenciaId,
-            obj.data[0].numeroOrden,
-            obj.data[0].rotulado,
-            obj.data[0].descripcion.replace("&quot;", '\"'),
-            motivo,
-            accion
-          ]).draw(false);
-          iniciarNuevaCarga();
-        }
+      success: function(response){
 
+          let nombre_visitante = $('#nombre').val()+' '+$('#apellido').val()
+          let cedula = $('#cedula_3').val();
+          $('#cedula_b').val(cedula);
+          $('#visitante').val(nombre_visitante)
+          $('#cedula_3').val('');
+          $('#nombre').val('');
+          $('#apellido').val('');
+          $('#cedula_a').val(cedula);
+          Swal.fire(
+                'Se ha guardado correctamente el nuevo visitante!',
+                '',
+                'success'
+              ).then(function (){
+                  $('#agregarVisitante').modal('hide');
+              })
+      },
+          error: function (){
+          document.getElementById("m_cedula").innerHTML = "[ERROR] Ya se registró el visitante en el sistema";
+          $('#cedula_3').val('');
+          $('#nombre').val('');
+          $('#apellido').val('');
+          $('#telefono').val('');
       }
-    });
-  } else {
-    document.getElementById("modalMensaje").innerHTML = "[ERROR] El Bien ya se encuentra cargado!";
-    $('#msgValidacion').modal('show');
+
+  })
+  }else {
+      // $('#msgValidacion').modal('show');
+     // $('#agregarVisitante').modal('show');
   }
-}
-
-function eliminarBien(rotulado) {
-  dtBienes.row($("#" + rotulado).parents('tr')).remove().draw();
-}
-
-function iniciarNuevaCarga() {
-  document.getElementById("reg_entidad").value = "";
-  document.getElementById("reg_reparticion").value = "";
-  document.getElementById("reg_dependencia").value = "";
-  document.getElementById("reg_numero_orden").value = "";
-  document.getElementById("reg_entidad").focus();
-}
-
-function cargarBienesMover() {
-  var detalles = dtBienes.rows().data().toArray();
-  var bien = "";
-  detalles.forEach(element => {
-    bien = '{"dep_id":' + element[0] + ',"nro_orden":' + element[1] + ',"motivo":"' + element[4] + '"}';
-    detallesDatatable.push(bien);
-  });
-  detallesDatatable = '[' + detallesDatatable + ']';
-}
-
-formulario.addEventListener('submit', function (e) {
-  e.preventDefault();
-  cargarBienesMover();
-  if (validarFormularioMovimiento()) {
-    var datos = new FormData(formulario);
-    fetch("../scripts/movimientosInternos/post_movimiento.php?detalles=" + detallesDatatable, {
-      method: 'POST',
-      body: datos
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.respuesta === 't') {
-          numero_MIB = data.numero;
-          periodo_MIB = data.periodo;
-          $('#msgConfirmacion').modal('show');
-        } else if (data.respuesta === 'f') {
-          $('#msgError').modal('show');
-        }
-      })
   }
-});
+  //validar campos
+function validar_campos_editar(){
+    var cedula = document.getElementById("cedula_3").value;
+    var nombre = document.getElementById("nombre").value;
+    var apellido = document.getElementById("apellido").value;
+    var nacionalidad = document.getElementById("nacionalidad").value;
 
-//VALIDAR BIENES DE USO A MOVER
-function validarAgregarBien(rotulado) {
-  //validación para no duplicar bienes en datatable
-  var control = true;
-  var detalles = dtBienes.rows().data().toArray();
-  detalles.forEach(element => {
-    if (element[2].toUpperCase() === rotulado.toUpperCase()) {
-      control = false;
+    if (cedula == null || cedula.length == 0) {
+      document.getElementById("m_cedula").innerHTML = "[ERROR] Campo cédula no puede estar en blanco";
+      return false;
     }
-  });
-  return control;
-}
 
-//VALIDAR FORMULARIO DE REGISRO 
-function validarFormularioMovimiento() {
-  var fecha = document.getElementById("reg_fecha_movimiento").value;
-  var ubicacion_origen = document.getElementById("reg_ubicacion_origen").value;
-  var ubicacion_destino = document.getElementById("reg_ubicacion_destino").value;
-  var data = dtBienes.rows().data().toArray();
+    if (nacionalidad == null || nacionalidad.length == 0) {
+      document.getElementById("m_nacionalidad").innerHTML = "[ERROR] Campo nacionalidad no puede estar en blanco";
+      return false;
+    }
 
-  if (fecha == null || fecha.length == 0 || verificar_fecha(fecha) == false) {
-    document.getElementById("reg_fecha_movimiento").style.borderColor = "#b5352a";
-    document.getElementById("reg_fecha_movimiento").style.boxShadow = "0 0 0 3px rgba(220, 53, 69, 0.5)";
-    document.getElementById("modalMensaje").innerHTML = "[ERROR] Debe seleccionar una fecha válida para realizar un Movimiento Interno!";
-    $('#msgValidacion').modal('show');
-    return false;
+    if (nombre == null || nombre.length == 0) {
+      document.getElementById("m_nombre").innerHTML = "[ERROR] Campo nombre no puede estar en blanco";
+      return false;
+    }
+
+    if (apellido == null || apellido.length == 0) {
+      document.getElementById("m_apellido").innerHTML = "[ERROR] Campo apellido no puede estar en blanco";
+      return false;
+    }
+
+    // if ($.isEmptyObject(data)) {
+    //   document.getElementById("modalMensaje").innerHTML = "[ERROR] No hay elementos cargados!";
+    //   $('#msgValidacion').modal('show');
+    //   return false;
+    // }
+    return true;
   }
 
-  if (ubicacion_origen == null || ubicacion_origen.length == 0) {
-    document.getElementById("btnUbicacionOrigen").style.borderColor = "#b5352a";
-    document.getElementById("btnUbicacionOrigen").style.boxShadow = "0 0 0 3px rgba(220, 53, 69, 0.5)";
-    document.getElementById("modalMensaje").innerHTML = "[ERROR] Debe seleccionar una Ubicación de Origen para realizar un Movimiento Interno!";
-    $('#msgValidacion').modal('show');
-    return false;
-  }
+//funcion que trabaja para parsear codigo mrz(se llamo equivocadamene ocr)
+function ocr() {
+    $('#cedula').on('change', function (e) {
+        var campo_texto=$('#cedula_3').val()
+        console.log(campo_texto)
+        if (campo_texto.length > 14){
+            console.log(campo_texto);
+            if (campo_texto.substr(0, 1)!=='P'){
+                var id = campo_texto.substr(5,7);
+                var codigo_nacionalidad = campo_texto.substr(45, 3);
+                var nombre_apellido= campo_texto.substr(59);
+                var final_primer_apellido = nombre_apellido.search(';');
+                var primer_apellido = nombre_apellido.substr(1, final_primer_apellido-1);
+                var resto_nombre = nombre_apellido.substr(final_primer_apellido+1)
+                var final_segundo_apellido = resto_nombre.search(';');
+                var resto_nombre2 = resto_nombre.substr(final_segundo_apellido+2);
+                var segundo_apellido = resto_nombre.substr(resto_nombre+1, final_segundo_apellido);
+                var apellido_completo = primer_apellido + ' '+ segundo_apellido;
+                var fin_primer_nombre = resto_nombre2.search(';');
+                var primer_nombre = resto_nombre2.substr(0, fin_primer_nombre);
+                var segundo_nombre = resto_nombre2.substr(fin_primer_nombre+1);
+                console.log(segundo_nombre);
+                console.log(segundo_nombre.search(';'))
+                if (segundo_nombre.search(';')!=-1){
+                    segundo_nombre = segundo_nombre.substr(0, segundo_nombre.search(';'));
+                }
+                var nombre_completo = primer_nombre +' ' +segundo_nombre;
+                console.log(id);
+                console.log(apellido_completo);
+                // console.log(resto_nombre2);
+                // console.log(primer_nombre);
+                // console.log(segundo_nombre);
+                console.log(nombre_completo);
+                $('#cedula_3').val(id);
+                // $('#cedula').val(id);
+                $('#nombre').val(nombre_completo);
+                $('#apellido').val(apellido_completo);
+                $('#nacionalidad').val(codigo_nacionalidad);
+                $('#telefono').focus();
+        }else{
+            console.log('es un pasaporte');
+            let indice_id = campo_texto.search(';;;;;;;;;;;;;;');
+            let id = campo_texto.substr(indice_id+14, 9);
+            console.log(id);
+            let indice_apellido = campo_texto.search(';');
+            let apellido_completo = campo_texto.substr(indice_apellido+4, campo_texto.search(';;')-4);
+            if (apellido_completo.search(';')!==-1){
+                let indice_primer_apellido = apellido_completo.search(';');
+                let primer_apellido = apellido_completo.substr(0, indice_primer_apellido);
+                console.log(primer_apellido);
+                let segundo_apellido = apellido_completo.substr(indice_primer_apellido+1);
+                console.log(segundo_apellido);
+                var apellido_completo1 = primer_apellido+' '+segundo_apellido;
+            }
+            let indice_nombre = campo_texto.search(';;');
+            let nombre_completo = campo_texto.substr(indice_nombre+2, indice_id-16);
+            console.log(nombre_completo);
+            if (nombre_completo.search(';')!==-1){
+                let indice_primer_nombre = nombre_completo.search(';');
+                let primer_nombre = nombre_completo.substr(0, indice_primer_nombre);
+                console.log(primer_nombre);
+                let segundo_nombre = nombre_completo.substr(indice_primer_nombre+1);
+                console.log(segundo_nombre);
+                var nombre_completo1 = primer_nombre+' '+segundo_nombre;
+            }
 
-  if (ubicacion_destino == null || ubicacion_destino.length == 0) {
-    document.getElementById("btnUbicacionDestino").style.borderColor = "#b5352a";
-    document.getElementById("btnUbicacionDestino").style.boxShadow = "0 0 0 3px rgba(220, 53, 69, 0.5)";
-    document.getElementById("modalMensaje").innerHTML = "[ERROR] Debe seleccionar una Ubicación de Destino para realizar un Movimiento Interno!";
-    $('#msgValidacion').modal('show');
-    return false;
-  }
-
-  if (ubicacion_origen == ubicacion_destino) {
-    document.getElementById("btnUbicacionOrigen").style.borderColor = "#b5352a";
-    document.getElementById("btnUbicacionOrigen").style.boxShadow = "0 0 0 3px rgba(220, 53, 69, 0.5)";
-    document.getElementById("modalMensaje").innerHTML = "[ERROR] Obicación de Origen y Ubicación de Destino no pueden ser iguales!";
-    $('#msgValidacion').modal('show');
-    return false;
-  }
-
-  if ($.isEmptyObject(data)) {
-    document.getElementById("modalMensaje").innerHTML = "[ERROR] No hay bienes cargados!";
-    $('#msgValidacion').modal('show');
-    return false;
-  }
-
-  return true;
-}
-//IMPRIMIR MOVIMIENTO INTERNO
+                $('#cedula').val(id);
+                $('#nombre').val(nombre_completo1);
+                $('#apellido').val(apellido_completo1);
+                $('#nacionalidad').val(codigo_nacionalidad);
+                $('#telefono').focus();
+        }
+        }
+    });
+};
+/* //IMPRIMIR MOVIMIENTO INTERNO
 function imprimirMovimiento() {
   var login = document.getElementById("login").value;
   window.open(
@@ -385,3 +394,4 @@ $('#verUbicacionesOrigen').on('shown.bs.modal', function () {
 $('#verUbicacionesDestino').on('shown.bs.modal', function () {
   $("div.dataTables_filter input").focus();
 });
+ */
