@@ -11,7 +11,6 @@ $title = "REGISTRAR VISITA - TEMIANDU";
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<?php //include("/header.php"); ?>
     <div class="am-pagetitle">
         <h5 class="am-title"><?php echo $title ?></h5>
     </div><!-- am-pagetitle -->
