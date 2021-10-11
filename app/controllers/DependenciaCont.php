@@ -7,7 +7,7 @@ class DependenciaCont{
     private $connPg;
 
     public function __construct() {
-		$this->connPg = new ConnectionPg();
+		$this->connPg = new ConnectionPgJoaju();
 	}
 
     public function obtenerDependencias(){
@@ -36,7 +36,7 @@ class DependenciaCont{
     public function obtenerDependenciasModal(){
         $contador=0;
         $this->connPg->open();
-        $query = "SELECT * FROM parametricos.dependencias";
+        $query = "SELECT dep_id, dep_descripcion FROM parametricos.dependencias where oficina_id = '1' order by dep_id;";
         $result = $this->connPg->execute($query);
         $this->connPg->close();
         $numReg = pg_num_rows($result);
@@ -45,9 +45,6 @@ class DependenciaCont{
             while ( $row = pg_fetch_array($result)) {
                 $dependencia = new Dependencia();
                 $dependencia->setId($row ['dep_id'] );
-                $dependencia->setEntidad($row ['ent_codigo'] );
-                $dependencia->setReparticion($row ['rp_codigo'] );
-                $dependencia->setCodigo($row ['dep_codigo'] );
                 $dependencia->setDescripcion($row ['dep_descripcion'] );
                 $dependencias[$contador++]= $dependencia;
             } 

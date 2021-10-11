@@ -10,6 +10,8 @@
 window.onload = function (){
     mostrarCalendario();
     mostrarHoraEntrada();
+    codigoMRZ();
+    cargarDataTableDestino();
 };
 
 //VARIABLES
@@ -17,7 +19,7 @@ var detallesDatatable = new Array();
 var numero_MIB = 0;
 var periodo_MIB = 0;
 let nombre_global;
-
+var table;
 /* var formulario = document.getElementById("frmGuardarMovimiento");
 
 var dtBienes = $('#dtBienesMovimiento').DataTable({
@@ -55,11 +57,11 @@ var dtBienes = $('#dtBienesMovimiento').DataTable({
     }
 
   ]
-});
+});*/
 
 //CARGAR UBICACION ORIGEN EN EL FORMULARIO
-function cargarUbicacionOrigenModal() {
-  var table = $('#dtUbicacionesOrigenModal').DataTable({
+function cargarDataTableDestino() {
+  var table = $('#tblBusquedaDestino').DataTable({
     keys: true,
     iDisplayLength: 10,
     responsive: true,
@@ -83,42 +85,17 @@ function cargarUbicacionOrigenModal() {
       url: "../scripts/dependencias/get_dependencias_dt_modal.php",
     },
     columns: [
-      { data: "id", width: "1%" },
-      { data: "entidad" },
-      { data: "reparticion" },
-      { data: "codigo" },
-      { data: "descripcion", width: "5%" },
+      { data: "id" },
+      { data: "dependencia"},
     ],
-    columnDefs: [
-      {
-        "targets": [1],
-        "visible": false,
-        "searchable": false
-      },
-      {
-        "targets": [2],
-        "visible": false,
-        "searchable": false
-      },
-      {
-        "targets": [3],
-        "visible": false,
-        "searchable": false
-      }
-    ]
   });
   table
     .on('key', function (e, datatable, key, cell, originalEvent) {
       if (key === 13) {
-        dtBienes.rows().remove().draw();
-        var id = table.rows('.selected').data()[0].id;
-        var descripcion = table.rows('.selected').data()[0].descripcion;
-        var codigo = table.rows('.selected').data()[0].entidad + "-" + table.rows('.selected').data()[0].reparticion + "-" + table.rows('.selected').data()[0].codigo;
+        var dependencia = table.rows('.selected').data()[0].descripcion;
 
-        $("#reg_ubicacion_origen_id").val(id);
-        $("#reg_ubicacion_origen_codigo").val(codigo);
-        $("#reg_ubicacion_origen").val(descripcion);
-        $("#verUbicacionesOrigen").modal("hide");
+        $("#destino").val(dependencia);
+        $("#tblBusquedaDestino").modal("hide");
       }
     })
     .on('key-focus', function (e, datatable, cell) {
@@ -126,18 +103,14 @@ function cargarUbicacionOrigenModal() {
       datatable.row(cell.index().row).select();
     })
     .on('dblclick', 'tr', function () {
-      dtBienes.rows().remove().draw();
-      var id = table.rows('.selected').data()[0].id;
-      var descripcion = table.rows('.selected').data()[0].descripcion;
-      var codigo = table.rows('.selected').data()[0].entidad + "-" + table.rows('.selected').data()[0].reparticion + "-" + table.rows('.selected').data()[0].codigo;
-
-      $("#reg_ubicacion_origen_id").val(id);
-      $("#reg_ubicacion_origen_codigo").val(codigo);
-      $("#reg_ubicacion_origen").val(descripcion);
-      $("#verUbicacionesOrigen").modal("hide");
+      var descripcion = table.rows('.selected').data()[0].dependencia;
+      console.log(descripcion)
+      $("#destino").val(descripcion);
+      $('#buscarDestino').modal('hide');
 
     });
 }
+/*
 
 //CARGAR LISTADO VISITAS EN FORMULARIO
 function cargarUbicacionDestinoModal() {
@@ -301,81 +274,6 @@ function validar_campos_editar(){
     return true;
   }
 
-//funcion que trabaja para parsear codigo mrz(se llamo equivocadamene ocr)
-function ocr() {
-    $('#cedula').on('change', function (e) {
-        var campo_texto=$('#cedula_3').val()
-        console.log(campo_texto)
-        if (campo_texto.length > 14){
-            console.log(campo_texto);
-            if (campo_texto.substr(0, 1)!=='P'){
-                var id = campo_texto.substr(5,7);
-                var codigo_nacionalidad = campo_texto.substr(45, 3);
-                var nombre_apellido= campo_texto.substr(59);
-                var final_primer_apellido = nombre_apellido.search(';');
-                var primer_apellido = nombre_apellido.substr(1, final_primer_apellido-1);
-                var resto_nombre = nombre_apellido.substr(final_primer_apellido+1)
-                var final_segundo_apellido = resto_nombre.search(';');
-                var resto_nombre2 = resto_nombre.substr(final_segundo_apellido+2);
-                var segundo_apellido = resto_nombre.substr(resto_nombre+1, final_segundo_apellido);
-                var apellido_completo = primer_apellido + ' '+ segundo_apellido;
-                var fin_primer_nombre = resto_nombre2.search(';');
-                var primer_nombre = resto_nombre2.substr(0, fin_primer_nombre);
-                var segundo_nombre = resto_nombre2.substr(fin_primer_nombre+1);
-                console.log(segundo_nombre);
-                console.log(segundo_nombre.search(';'))
-                if (segundo_nombre.search(';')!=-1){
-                    segundo_nombre = segundo_nombre.substr(0, segundo_nombre.search(';'));
-                }
-                var nombre_completo = primer_nombre +' ' +segundo_nombre;
-                console.log(id);
-                console.log(apellido_completo);
-                // console.log(resto_nombre2);
-                // console.log(primer_nombre);
-                // console.log(segundo_nombre);
-                console.log(nombre_completo);
-                $('#cedula_3').val(id);
-                // $('#cedula').val(id);
-                $('#nombre').val(nombre_completo);
-                $('#apellido').val(apellido_completo);
-                $('#nacionalidad').val(codigo_nacionalidad);
-                $('#telefono').focus();
-        }else{
-            console.log('es un pasaporte');
-            let indice_id = campo_texto.search(';;;;;;;;;;;;;;');
-            let id = campo_texto.substr(indice_id+14, 9);
-            console.log(id);
-            let indice_apellido = campo_texto.search(';');
-            let apellido_completo = campo_texto.substr(indice_apellido+4, campo_texto.search(';;')-4);
-            if (apellido_completo.search(';')!==-1){
-                let indice_primer_apellido = apellido_completo.search(';');
-                let primer_apellido = apellido_completo.substr(0, indice_primer_apellido);
-                console.log(primer_apellido);
-                let segundo_apellido = apellido_completo.substr(indice_primer_apellido+1);
-                console.log(segundo_apellido);
-                var apellido_completo1 = primer_apellido+' '+segundo_apellido;
-            }
-            let indice_nombre = campo_texto.search(';;');
-            let nombre_completo = campo_texto.substr(indice_nombre+2, indice_id-16);
-            console.log(nombre_completo);
-            if (nombre_completo.search(';')!==-1){
-                let indice_primer_nombre = nombre_completo.search(';');
-                let primer_nombre = nombre_completo.substr(0, indice_primer_nombre);
-                console.log(primer_nombre);
-                let segundo_nombre = nombre_completo.substr(indice_primer_nombre+1);
-                console.log(segundo_nombre);
-                var nombre_completo1 = primer_nombre+' '+segundo_nombre;
-            }
-
-                $('#cedula').val(id);
-                $('#nombre').val(nombre_completo1);
-                $('#apellido').val(apellido_completo1);
-                $('#nacionalidad').val(codigo_nacionalidad);
-                $('#telefono').focus();
-        }
-        }
-    });
-};
 /* //IMPRIMIR MOVIMIENTO INTERNO
 function imprimirMovimiento() {
   var login = document.getElementById("login").value;
@@ -495,6 +393,79 @@ function  mostrarHoraEntrada(){
     $('#hora_entrada').datetimepicker({
         format: 'HH:mm',
     }).val(hora_actual);
+}
 
+function codigoMRZ() {
+    $('#cedula_b').on('change', function (e) {
+        var campo_texto=$('#cedula_3').val()
+        console.log(campo_texto)
+        if (campo_texto.length > 14){
+            console.log(campo_texto);
+            if (campo_texto.substr(0, 1)!=='P'){
+                var id = campo_texto.substr(5,7);
+                var codigo_nacionalidad = campo_texto.substr(45, 3);
+                var nombre_apellido= campo_texto.substr(59);
+                var final_primer_apellido = nombre_apellido.search(';');
+                var primer_apellido = nombre_apellido.substr(1, final_primer_apellido-1);
+                var resto_nombre = nombre_apellido.substr(final_primer_apellido+1)
+                var final_segundo_apellido = resto_nombre.search(';');
+                var resto_nombre2 = resto_nombre.substr(final_segundo_apellido+2);
+                var segundo_apellido = resto_nombre.substr(resto_nombre+1, final_segundo_apellido);
+                var apellido_completo = primer_apellido + ' '+ segundo_apellido;
+                var fin_primer_nombre = resto_nombre2.search(';');
+                var primer_nombre = resto_nombre2.substr(0, fin_primer_nombre);
+                var segundo_nombre = resto_nombre2.substr(fin_primer_nombre+1);
+                console.log(segundo_nombre);
+                console.log(segundo_nombre.search(';'))
+                if (segundo_nombre.search(';')!=-1){
+                    segundo_nombre = segundo_nombre.substr(0, segundo_nombre.search(';'));
+                }
+                var nombre_completo = primer_nombre +' ' +segundo_nombre;
+                console.log(id);
+                console.log(apellido_completo);
+                // console.log(resto_nombre2);
+                // console.log(primer_nombre);
+                // console.log(segundo_nombre);
+                console.log(nombre_completo);
+                $('#cedula_3').val(id);
+                // $('#cedula').val(id);
+                $('#nombre').val(nombre_completo);
+                $('#apellido').val(apellido_completo);
+                $('#nacionalidad').val(codigo_nacionalidad);
+                $('#telefono').focus();
+            }else{
+                console.log('es un pasaporte');
+                let indice_id = campo_texto.search(';;;;;;;;;;;;;;');
+                let id = campo_texto.substr(indice_id+14, 9);
+                console.log(id);
+                let indice_apellido = campo_texto.search(';');
+                let apellido_completo = campo_texto.substr(indice_apellido+4, campo_texto.search(';;')-4);
+                if (apellido_completo.search(';')!==-1){
+                    let indice_primer_apellido = apellido_completo.search(';');
+                    let primer_apellido = apellido_completo.substr(0, indice_primer_apellido);
+                    console.log(primer_apellido);
+                    let segundo_apellido = apellido_completo.substr(indice_primer_apellido+1);
+                    console.log(segundo_apellido);
+                    var apellido_completo1 = primer_apellido+' '+segundo_apellido;
+                }
+                let indice_nombre = campo_texto.search(';;');
+                let nombre_completo = campo_texto.substr(indice_nombre+2, indice_id-16);
+                console.log(nombre_completo);
+                if (nombre_completo.search(';')!==-1){
+                    let indice_primer_nombre = nombre_completo.search(';');
+                    let primer_nombre = nombre_completo.substr(0, indice_primer_nombre);
+                    console.log(primer_nombre);
+                    let segundo_nombre = nombre_completo.substr(indice_primer_nombre+1);
+                    console.log(segundo_nombre);
+                    var nombre_completo1 = primer_nombre+' '+segundo_nombre;
+                }
 
+                $('#cedula').val(id);
+                $('#nombre').val(nombre_completo1);
+                $('#apellido').val(apellido_completo1);
+                $('#nacionalidad').val(codigo_nacionalidad);
+                $('#telefono').focus();
+            }
+        }
+    });
 }
