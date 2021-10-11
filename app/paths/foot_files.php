@@ -24,5 +24,8 @@
 <script src="../../js/amanda.js"></script>
 
 <script src="../../lib/toggle/bootstrap4-toggle.min.js"></script>
+<script src="../../js/moment.min.js"></script>
+<script src="../../js/bootstrap-datetimepicker.min.js"></script>
+
 
  

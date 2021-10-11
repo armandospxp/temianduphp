@@ -1,12 +1,16 @@
 /*#########################################################
 ############   PAGINA REGISTAR VISITA      ###########
 ###########################################################*/
-//INCIO DE PAGINA
-/*$(document).ready(function () {
-  mostrarCalendario();
-  cargarUbicacionOrigenModal();
-  cargarUbicacionDestinoModal();
-}); */
+//INCIO DE PAGINA*
+// $(document).ready(function () {
+//   mostrarCalendario();
+//   // cargarUbicacionOrigenModal();
+//   // cargarUbicacionDestinoModal();
+// });
+window.onload = function (){
+    mostrarCalendario();
+    mostrarHoraEntrada();
+};
 
 //VARIABLES
 var detallesDatatable = new Array();
@@ -395,3 +399,97 @@ $('#verUbicacionesDestino').on('shown.bs.modal', function () {
   $("div.dataTables_filter input").focus();
 });
  */
+function limpiar_campos(){
+    $('#cedula_b').val('');
+    $('#visitante').val('');
+    $('#destino').val('');
+    $('#observaciones').val('');
+    $('#cedula_3').val('');
+    $('#nombre').val('');
+    $('#apellido').val('');
+    $('#nacionalidad').val('');
+    $('#telefono').val('');
+    location.reload();
+}
+
+function control_frm_visita() {
+    if (validar_campos() == true) {
+        $.ajax({
+            data: {
+                'fecha': $('#fecha').val(),
+                'hora_entrada': $('#hora_entrada').val(),
+                'hora_salida': $('#hora_salida').val(),
+                'cedula': $('#cedula_a').val(),
+                'visitante': $('#visitante').val(),
+                'destino': $('#destino').val(),
+                'observaciones': $('#observaciones').val(),
+                success: function(response){
+                    $('#cedula_b').val('');
+                    $('#cedula_a').val('');
+                    $('#visitante').val('')
+                    $('#destino').val('')
+                    $('#observaciones').val('')
+                    $('#hora_salida').val('');
+                    $('#nombre').val('');
+                    $('#apellido').val('');
+                    Swal.fire(
+                        'Se ha guardado correctamente!',
+                        '',
+                        'success'
+                    ).then(function (){
+                        location.reload();
+                    })
+                },
+            },
+            url: '/visitas/nuevo/',
+            type: "post"})
+    } else {
+        $('#msgError').modal('show');
+    }
+    function validar_campos() {
+        var visitante = document.getElementById("visitante").value;
+        var destino = document.getElementById("destino").value;
+        var hora_entrada = document.getElementById("hora_entrada").value;
+        var fecha = document.getElementById("fecha").value;
+
+        if (visitante == null || visitante.length == 0 || visitante.value == "") {
+            document.getElementById("modalMensajeVisita").innerHTML = "[ERROR] Campo Visitante no puede estar en blanco";
+            return false;
+        }
+        if (hora_entrada == null || hora_entrada.length == 0) {
+            document.getElementById("modalMensajeVisita").innerHTML = "[ERROR] Campo hora entrada no puede estar en blanco";
+            return false;
+        }
+        if (fecha == null || fecha.length == 0) {
+            document.getElementById("modalMensajeVisita").innerHTML = "[ERROR] Campo hora entrada no puede estar en blanco";
+            return false;
+        }
+
+        if (destino == null || destino.length == 0) {
+            document.getElementById("modalMensajeVisita").innerHTML = "[ERROR] Campo Destino no puede estar en blanco";
+            return false;
+        }
+        return true;
+    }
+}
+
+function mostrarCalendario() {
+    // Datepicker
+    $('#fecha').datepicker({
+        dateFormat: 'dd/mm/yy',
+        showOtherMonths: true,
+        selectOtherMonths: true
+    });
+}
+
+function  mostrarHoraEntrada(){
+    //jquery timepicker
+    var d = new Date();
+    var hora = d.getHours();
+    hora = ("0" + hora).slice(-2);
+    $('#datetimepicker3').datetimepicker({
+        format: 'LT',
+    });
+
+
+}

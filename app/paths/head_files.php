@@ -13,3 +13,5 @@
 <!-- Amanda CSS -->
 <link rel="stylesheet" href="../../css/amanda.css">
 
+<link rel="stylesheet" href="../../css/bootstrap-datetimepicker.css">
+
