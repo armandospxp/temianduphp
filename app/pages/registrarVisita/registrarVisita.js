@@ -475,11 +475,13 @@ function control_frm_visita() {
 
 function mostrarCalendario() {
     // Datepicker
+    var d = new Date();
+    var fecha = d.getDate();
     $('#fecha').datepicker({
         dateFormat: 'dd/mm/yy',
         showOtherMonths: true,
-        selectOtherMonths: true
-    });
+        selectOtherMonths: true,
+    }).datepicker("setDate", new Date());
 }
 
 function  mostrarHoraEntrada(){
@@ -487,9 +489,12 @@ function  mostrarHoraEntrada(){
     var d = new Date();
     var hora = d.getHours();
     hora = ("0" + hora).slice(-2);
-    $('#datetimepicker3').datetimepicker({
-        format: 'LT',
-    });
+    var minuto = d.getMinutes();
+    minuto = ("0" + minuto).slice(-2);
+    var hora_actual = hora+':'+minuto;
+    $('#hora_entrada').datetimepicker({
+        format: 'HH:mm',
+    }).val(hora_actual);
 
 
 }
