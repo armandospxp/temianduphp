@@ -9,6 +9,7 @@
 // });
 window.onload = function (){
     mostrarCalendario();
+    mostrarHoraSalida();
     mostrarHoraEntrada();
     codigoMRZ();
     cargarDataTableDestino();
@@ -393,6 +394,12 @@ function  mostrarHoraEntrada(){
     $('#hora_entrada').datetimepicker({
         format: 'HH:mm',
     }).val(hora_actual);
+}
+
+function mostrarHoraSalida(){
+  $('#hora_salida').datetimepicker({
+    format: 'HH:mm',
+});
 }
 
 function codigoMRZ() {
