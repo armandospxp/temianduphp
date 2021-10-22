@@ -1,18 +1,18 @@
 <?php
-include_once (__DIR__."/../../controllers/DependenciaCont.php");
+include_once (__DIR__."/../../controllers/VisitaCont.php");
 
 $tabla = "";
-$depCont = new DependenciaCont();
-$dependencias = $depCont->obtenerDependencias();
+$listado_visita_cont = new VisitaCont();
+$listado_visita = $listado_visita_cont->obtenerConsultaDtVisita();
 
-for($i = 0; $i < count($dependencias); $i ++) {
+for($i = 0; $i < count($listado_visita); $i ++) {
   
-  $id = $dependencias[$i]->getId();
-  $jerarquia = $dependencias[$i]->getJerarquia();
-  $codigo = $dependencias[$i]->getCodigo();
-  $descripcion = $dependencias[$i]->getDescripcion();
-  $oficina = $dependencias[$i]->getOficina();
-  $tipo = $dependencias[$i]->getTipo();
+  $id = $listado_visita[$i]->getId();
+  $numero_documento = $listado_visita[$i]->getJerarquia();
+  $nacionalidad = $listado_visita[$i]->getCodigo();
+  $destino = $listado_visita[$i]->getDescripcion();
+  $fecha = $listado_visita[$i]->getOficina();
+  $tipo = $listado_visita[$i]->getTipo();
     
   $tabla .= '{"id":"' . $id . '",
     "jerarquia":"' . $jerarquia . '",
