@@ -4,21 +4,21 @@ include_once (__DIR__ . "/../config/ConnectionPgTemiandu.php");
 include_once (__DIR__."/../models/Visita.php");
 include_once (__DIR__."/../models/ListadoVisita.php");
 
-class VisitaCont{
+class VisitanteCont{
     private $connPgTemiandu;
 
     public function __construct() {
-		$this->connPgTemiandu = new ConnectionPgTemiandu();
-	}
+        $this->connPgTemiandu = new ConnectionPgTemiandu();
+    }
 
-    public function obtenerVisitas(){
+    public function obtenerVisitantes(){
         $contador=0;
         $this->connPgTemiandu->open();
-        $query = "SELECT * FROM public.planilla_visitas";
+        $query = "SELECT * FROM public.visitante";
         $result = $this->connPgTemiandu->execute($query);
         $this->connPgTemiandu->close();
         $numReg = pg_num_rows($result);
-        
+
         if($numReg > 0){
             while ( $row = pg_fetch_array($result)) {
                 $visita = new Visita();
@@ -31,7 +31,7 @@ class VisitaCont{
                 $visita->setEstado($row ['estado'] );
                 $visita->setUsuario($row ['usuario'] );
                 $visita[$contador++]= $visita;
-            } 
+            }
         }
         return $visita;
     }
@@ -57,7 +57,7 @@ class VisitaCont{
         }
         return $visita;
     }
-    
+
     public function obtenerConsultaDtVisita(){
         $listado_visita = new ListadoVisita();
         $this->connPgTemiandu->open();

@@ -1,9 +1,9 @@
 <?php
-include_once (__DIR__."/../../controllers/VisitaCont.php");
+include_once (__DIR__."/../../controllers/VisitanteCont.php");
 
 $tabla = "";
-$listado_visita_cont = new VisitaCont();
-$listado_visita = $listado_visita_cont->obtenerConsultaDtVisita();
+$listado_visitante_cont = new VisitanteCont();
+$listado_visitante = $listado_visitante_cont->obtenerConsultaDtVisita();
 
 for($i = 0; $i < count($listado_visita); $i ++) {
   
