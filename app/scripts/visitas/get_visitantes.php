@@ -15,11 +15,11 @@ for($i = 0; $i < count($listado_visita); $i ++) {
     $telefono = $listado_visita[$i]->getTelefono();
 
     $tabla .= '{"id":"' . $id . '",
-    "jerarquia":"' . $jerarquia . '",
-    "codigo":"' . $codigo . '",
-    "descripcion":"' . $descripcion . '",
-    "oficina":"' . $oficina . '",
-    "tipo":"' . $tipo . '"},';
+    "documento":"' . $documento . '",
+    "nombre":"' . $nombre . '",
+    "apellido":"' . $apellido . '",
+    "id_nacionalidad":"' . $id_nacionalidad . '",
+    "$telefono":"' . $telefono . '"},';
 }
 
 $tabla = substr ( $tabla, 0, strlen ( $tabla ) - 1 );
